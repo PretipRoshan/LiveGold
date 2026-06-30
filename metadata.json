@@ -1,0 +1,6 @@
+{
+  "name": "Gold Decision Support System",
+  "description": "A web-based decision support system for XAU/USD gold price analysis and trading signals utilizing technical indicators (MA20, MA50, RSI14) and AI commentary, designed for the CS Diploma at Southern University College.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
