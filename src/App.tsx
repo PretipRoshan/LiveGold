@@ -29,17 +29,19 @@ export default function App() {
   const [isGeneratingAI, setIsGeneratingAI] = useState<boolean>(false);
   const [hasApiKey, setHasApiKey] = useState<boolean>(true);
 
-  // 1. Initial Data Load fetching from local Express endpoints
+  // 1. DEFINE fetchGoldData FIRST at the top level
   const fetchGoldData = async () => {
     try {
       const res = await fetch('/api/gold-data');
       if (!res.ok) throw new Error('Failed to retrieve analyzer indicators feed.');
-const data: AnalysisResponse = await res.json();
+      const data = (await res.json()) as AnalysisResponse;
+      setAnalysis(data);
     } catch (err) {
       console.error(err);
     }
   };
 
+  // 2. DEFINE fetchAlertLogs at the top level
   const fetchAlertLogs = async () => {
     try {
       const res = await fetch('/api/alert-logs');
@@ -52,7 +54,7 @@ const data: AnalysisResponse = await res.json();
     }
   };
 
-  // Check if API commentary key is present
+  // 3. DEFINE fetchCommentary at the top level
   const fetchCommentary = async (refresh: boolean = false) => {
     if (refresh) setIsGeneratingAI(true);
     try {
@@ -60,11 +62,7 @@ const data: AnalysisResponse = await res.json();
       if (res.ok) {
         const body = await res.json();
         setCommentary(body.commentary || '');
-        if (body.isMock) {
-          setHasApiKey(false);
-        } else {
-          setHasApiKey(true);
-        }
+        setHasApiKey(!body.isMock);
       }
     } catch (err) {
       console.error(err);
@@ -74,6 +72,32 @@ const data: AnalysisResponse = await res.json();
     }
   };
 
+  // 4. NOW useEffect can safely call them because they are defined above!
+  useEffect(() => {
+    const bootstrap = async () => {
+      setIsLoading(true);
+      await Promise.all([fetchGoldData(), fetchAlertLogs(), fetchCommentary(false)]);
+      setIsLoading(false);
+    };
+    bootstrap();
+  }, []);
+
+  // 5. NOW handleResetData can safely call fetchAlertLogs too!
+  const handleResetData = async () => {
+    setIsSimulating(true);
+    try {
+      const res = await fetch('/api/reset-data', { method: 'POST' });
+      if (res.ok) {
+        const body = await res.json();
+        setAnalysis(body.analysis);
+        await fetchAlertLogs();
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSimulating(false);
+    }
+  };
   useEffect(() => {
     const bootstrap = async () => {
       setIsLoading(true);
@@ -103,22 +127,6 @@ const data: AnalysisResponse = await res.json();
             `[SYSTEM CROSSOVER] Golden Signal just shifted to **${updated.signal}** at $${updated.currentPrice}/oz with standard indicators complying.`
           );
         }
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsSimulating(false);
-    }
-  };
-
-  const handleResetData = async () => {
-    setIsSimulating(true);
-    try {
-      const res = await fetch('/api/reset-data', { method: 'POST' });
-      if (res.ok) {
-        const body = await res.json();
-        setAnalysis(body.analysis);
-        await fetchAlertLogs();
       }
     } catch (err) {
       console.error(err);
