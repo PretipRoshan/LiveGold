@@ -34,8 +34,7 @@ export default function App() {
     try {
       const res = await fetch('/api/gold-data');
       if (!res.ok) throw new Error('Failed to retrieve analyzer indicators feed.');
-      const data: AnalysisResponse = await res.ok ? await res.json() : null;
-      setAnalysis(data);
+const data: AnalysisResponse = await res.json();
     } catch (err) {
       console.error(err);
     }
