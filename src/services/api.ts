@@ -1,8 +1,8 @@
 // Example using a generic REST endpoint structure
 export async function fetchLiveGoldPrice(): Promise<number | null> {
-  const apiKey = import.meta.env.VITE_MARKET_API_KEY;
+  const apiKey = process.env.FINNHUB_API_KEY;
   // Replace this URL with your specific provider's endpoint for XAU/USD
-  const url = `https://api.exampleprovider.com/v1/price?symbol=XAU/USD&apikey=${apiKey}`;
+  const url = `https://finnhub.io/api/v1/quote?symbol=XAUUSD&token=$](https://finnhub.io/api/v1/quote?symbol=XAUUSD&token=$){apiKey}`;
 
   try {
     const response = await fetch(url);
