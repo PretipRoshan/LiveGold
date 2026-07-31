@@ -2,8 +2,7 @@
 export async function fetchLiveGoldPrice(): Promise<number | null> {
   const apiKey = process.env.FINNHUB_API_KEY;
   // Replace this URL with your specific provider's endpoint for XAU/USD
-  const url = `https://finnhub.io/api/v1/quote?symbol=XAUUSD&token=$](https://finnhub.io/api/v1/quote?symbol=XAUUSD&token=$){apiKey}`;
-
+const url = `https://finnhub.io/api/v1/quote?symbol=OANDA:XAU_USD&token=${apiKey}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
