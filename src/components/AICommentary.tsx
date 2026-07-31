@@ -1,24 +1,32 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-interface Message {
+// 1. We define the Message type right here so TypeScript knows what it is!
+export interface Message {
   id: string;
-  sender: 'user' | 'ai';
+  sender: 'user' | 'ai' | 'system';
   text: string;
   timestamp: Date;
 }
 
-export default function AICommentary() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 'welcome',
-      sender: 'ai',
-      text: "Hello! I am your Gold Analytica assistant. You can ask me anything about gold trends, technical analysis (like RSI and Moving Averages), or general market conditions.",
-      timestamp: new Date(),
-    },
-  ]);
+interface AICommentaryProps {
+  commentary: string;
+  onRefreshCommentary: () => void;
+  isGenerating: boolean;
+  hasApiKey: boolean;
+}
+
+export default function AICommentary({ 
+  commentary, 
+  onRefreshCommentary, 
+  isGenerating, 
+  hasApiKey 
+}: AICommentaryProps) {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  
+  // 2. We tell the state to use the Message type instead of "any[]"
+  const [messages, setMessages] = useState<Message[]>([]);
 
   // Auto-scroll to the bottom of the chat when a new message arrives
   useEffect(() => {
