@@ -174,17 +174,17 @@ export default function App() {
                 <h1 className="font-sans font-bold tracking-tight text-white text-base md:text-lg uppercase" id="system-main-heading">
                   Gold Analytica <span className="text-[#F0B90B] font-light">DSS</span>
                 </h1>
-                <span className="text-[10px] text-[#848E9C] uppercase tracking-widest font-semibold italic">CS Diploma Project</span>
+                <span className="text-[10px] text-[#848E9C] uppercase tracking-widest font-semibold italic">Advanced Trading Utility</span>
               </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2 text-[11px] font-sans" id="academic-affiliation-bar">
               <span className="bg-[#2B2816] text-[#F0B90B] px-2 py-0.5 rounded font-semibold border border-[#F0B90B]/30 flex items-center tracking-wide">
                 <Building2 className="w-3 h-3 mr-1" />
-                Student Capstone Submission
+                Live Intelligence Active
               </span>
               <span className="text-[#474D57] font-medium">|</span>
-              <span className="text-[#848E9C] font-semibold">Real-Time Decision Support System</span>
+              <span className="text-[#848E9C] font-semibold">Real-Time Market Analytics &amp; Signal Dashboard</span>
             </div>
           </div>
 
@@ -277,12 +277,12 @@ export default function App() {
               <div className="flex items-start justify-between gap-4 flex-col md:flex-row">
                 <div>
                   <span className="text-[10px] bg-[#2B2816] text-[#F0B90B] px-2 py-0.5 rounded uppercase tracking-wider font-semibold font-mono border border-[#F0B90B]/20">
-                    Indicator Engine Overview
+                    Strategy Overview
                   </span>
                   <h2 className="text-xl font-extrabold text-white mt-2 font-sans" id="ma20-overview-title">
-                    MA20 (20-day Simple Moving Average) + Signal Logic
+                    Trend Tracking: 20-Day Baseline + Signal Trigger
                   </h2>
-                  <p className="text-xs text-[#848E9C] mt-1">How the math engine evaluates trend alignment and momentum to trigger BUY / SELL / HOLD.</p>
+                  <p className="text-xs text-[#848E9C] mt-1">Our algorithm tracks price strength and market momentum to automatically detect entry and exit zones.</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-[#0ECB81] shadow-[0_0_18px_rgba(14,203,129,0.35)]" />
@@ -295,11 +295,11 @@ export default function App() {
                 <div className="lg:col-span-7 space-y-3">
                   <h3 className="font-bold text-white text-sm flex items-center">
                     <span className="w-1.5 h-3.5 bg-[#F0B90B] rounded mr-2" />
-                    What is MA20?
+                    What is the 20-Day Trend Line (MA20)?
                   </h3>
                   <p className="text-xs leading-relaxed text-[#848E9C]">
-                    MA20 is the <span className="text-[#E0E0E0] font-semibold">20-day Simple Moving Average</span>: it smooths the gold closing price by averaging the last 20 daily closes.
-                    When price is above MA20, the recent window is typically behaving bullish; when price is below MA20, it typically behaves bearish.
+                    The <span className="text-[#E0E0E0] font-semibold">MA20</span> simplifies market data by tracking the average gold price over the last 20 days. Think of it as the market's baseline:
+                    when the price is above this line, gold is in a strong upward trend (buying favor); when it falls below, it signals a downward trend (selling favor).
                   </p>
 
                   <div className="p-4 bg-[#0F1115]/50 border border-[#2A2D35] rounded-xl space-y-2">
@@ -328,13 +328,13 @@ export default function App() {
                 <div className="lg:col-span-5 space-y-3">
                   <h3 className="font-bold text-white text-sm flex items-center">
                     <span className="w-1.5 h-3.5 bg-[#0ECB81] rounded mr-2" />
-                    How BUY / SELL are triggered
+                    How Smart Signals Work
                   </h3>
                   <p className="text-xs leading-relaxed text-[#848E9C]">
-                    The engine combines: 
-                    <span className="text-[#E0E0E0] font-semibold"> MA20</span>, 
-                    <span className="text-[#E0E0E0] font-semibold"> MA50</span>, 
-                    and RSI to filter out market noise and evaluate momentum.
+                    To protect you from false moves ("market noise"), our platform cross-references
+                    <span className="text-[#E0E0E0] font-semibold"> short-term trends</span>,
+                    <span className="text-[#E0E0E0] font-semibold"> long-term trends</span>,
+                    and buyer momentum instantly.
                   </p>
 
                   <div className="space-y-1 mt-2">
