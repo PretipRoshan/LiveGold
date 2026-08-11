@@ -278,6 +278,18 @@ Output format (Markdown):
   }
 });
 
+app.post("/api/simulate-tick", async (req, res) => {
+  try {
+    // 1. Grab the action from the frontend (e.g., req.body.action like 'nudge_up')
+    // 2. Calculate the new price based on the action
+    // 3. Recalculate MA20, MA50, and RSI based on the new simulated price
+    // 4. Send the updated data back:
+    // res.json({ newPrice, newMA20, newMA50, newRSI, signal });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Simulation failed" });
+  }
+});
+
 app.post("/api/send-alert", (req, res) => {
   try {
     const { target, message } = req.body;

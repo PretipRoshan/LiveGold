@@ -69,7 +69,7 @@ export default function LiveSignals({
     if (ma20 === null || ma50 === null || rsi14 === null) return { overMA: false, normalRSI: false };
     return {
       overMA: currentPrice > ma20 && currentPrice > ma50,
-      normalRSI: rsi14 >= 40 && rsi14 <= 70
+      normalRSI: rsi14 >= 50 && rsi14 <= 70
     };
   };
 
