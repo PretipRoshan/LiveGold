@@ -281,6 +281,8 @@ app.post("/api/simulate-tick", async (req, res) => {
   try {
     const { action, currentPrice } = req.body;
 
+    console.log("The frontend just sent this action string:", action);
+    SS
     // 1. Fetch current historical data
     const history = await fetchGoldCandles(200);
     const latestCandle = history[history.length - 1];
