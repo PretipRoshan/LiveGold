@@ -13,7 +13,6 @@ app.use(express.json());
 const PORT = 3000;
 
 // Initialize Gemini Client
-// Initialize Gemini Client
 const ai = process.env.GEMINI_API_KEY ? new GoogleGenAI({}) : null;
 
 // -----------------------------
@@ -280,11 +279,54 @@ Output format (Markdown):
 
 app.post("/api/simulate-tick", async (req, res) => {
   try {
-    // 1. Grab the action from the frontend (e.g., req.body.action like 'nudge_up')
-    // 2. Calculate the new price based on the action
-    // 3. Recalculate MA20, MA50, and RSI based on the new simulated price
-    // 4. Send the updated data back:
-    // res.json({ newPrice, newMA20, newMA50, newRSI, signal });
+    const { action, currentPrice } = req.body;
+
+    // 1. Fetch current historical data
+    const history = await fetchGoldCandles(200);
+    const latestCandle = history[history.length - 1];
+
+    // 2. Set the starting price for the simulation
+    let simPrice = currentPrice !== undefined ? Number(currentPrice) : latestCandle.close;
+
+    // 3. Apply the price modifications based on the frontend action
+    // (Adjust the string cases below if your frontend uses different names for the buttons)
+    switch (action) {
+      case "surge":
+      case "force_surge":
+        simPrice += 18.50;
+        break;
+      case "dump":
+      case "force_dump":
+        simPrice -= 18.50;
+        break;
+      case "nudge_up":
+        simPrice += 4.00;
+        break;
+      case "nudge_down":
+        simPrice -= 4.00;
+        break;
+      case "random":
+      case "random_tick":
+        // Moves the price randomly between -$5.00 and +$5.00
+        simPrice += (Math.random() - 0.5) * 10;
+        break;
+      default:
+        // If an exact price is sent directly or action is unrecognized, keep simPrice as is
+        break;
+    }
+
+    // 4. Update the final candle in the history array with the simulated price
+    latestCandle.close = Number(simPrice.toFixed(2));
+    
+    // Prevent the candle from looking broken on a chart if the close breaks the high/low bounds
+    if (latestCandle.close > latestCandle.high) latestCandle.high = latestCandle.close;
+    if (latestCandle.close < latestCandle.low) latestCandle.low = latestCandle.close;
+
+    // 5. Recalculate indicators using your existing robust function
+    const simulatedAnalysis = analyzeGoldData(history);
+
+    // 6. Return the updated dataset to the frontend
+    res.json(simulatedAnalysis);
   } catch (error: any) {
     res.status(500).json({ error: error.message || "Simulation failed" });
   }
