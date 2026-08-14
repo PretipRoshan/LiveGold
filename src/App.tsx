@@ -6,6 +6,7 @@ import {
   Mail, 
   LineChart, 
   RotateCcw,
+  AlertTriangle // <-- Add this here!
 } from 'lucide-react';
 import { AnalysisResponse, AlertLog } from './types';
 import LiveSignals from './components/LiveSignals';
@@ -400,6 +401,17 @@ export default function App() {
           </div>
         )}
       </main>
+  {/* --- ADD THIS NEW FOOTER SECTION --- */}
+      <footer className="w-full border-t border-[#2A2D35] bg-[#0A0B0D] py-4" id="global-disclaimer-footer">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 text-center flex items-center justify-center space-x-2">
+          <AlertTriangle className="w-3.5 h-3.5 text-[#848E9C]" />
+          <p className="text-[10px] text-[#474D57] font-sans tracking-wide uppercase">
+            Disclaimer: This system utilizes Artificial Intelligence. All signals and commentary are for educational FYP purposes only and should not be fully trusted for financial decisions.
+          </p>
+        </div>
+      </footer>
+      {/* ----------------------------------- */}
+
     </div>
   );
 }
