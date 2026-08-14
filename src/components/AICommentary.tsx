@@ -80,7 +80,7 @@ export default function AICommentary({
                 role: 'user',
                 parts: [
                   {
-                    text: `You are an expert gold market analyst dashboard assistant. Answer the user's question accurately regarding gold, trading, or finance. User question: ${userMessageText}`,
+                    text: `You are an expert gold market analyst dashboard assistant. Answer the user's question accurately regarding gold, trading, or finance. Use PLAIN TEXT ONLY. Do not use asterisks, bolding, or markdown formatting. User question: ${userMessageText}`,
                   },
                 ],
               },
@@ -90,8 +90,8 @@ export default function AICommentary({
       );
 
       const data = await response.json();
-      const aiResponseText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn't process that request.";
-
+const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn't process that request.";
+const aiResponseText = rawText.replace(/\*/g, '');
       // 4. Add AI Message to Chat
       setMessages((prev) => [
         ...prev,
@@ -133,7 +133,7 @@ export default function AICommentary({
               wordBreak: 'break-word',
             }}
           >
-            <p style={{ margin: 0, fontSize: '14px', lineHeight: '1.4' }}>{msg.text}</p>
+            <p style={{ margin: 0, fontSize: '14px', lineHeight: '1.4', whiteSpace: 'pre-wrap' }}>{msg.text}</p>
           </div>
         ))}
         {isLoading && (
