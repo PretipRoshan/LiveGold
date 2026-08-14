@@ -14,20 +14,15 @@ app.use(express.json());
 
 const PORT = 3000;
 
-// Initialize Gemini Client
+
 const ai = process.env.GEMINI_API_KEY ? new GoogleGenAI({}) : null;
 
-// -----------------------------
-// Persistent in-memory storage
-// -----------------------------
+
 let alertLogs: AlertLog[] = [];
 
-// -----------------------------
-// Live data feed
-// -----------------------------
+
 async function fetchGoldCandles(limit: number = 200): Promise<GoldPriceCandle[]> {
   try {
-    // Using Yahoo Finance's public API for Gold Futures (GC=F) - 100% Free, NO API KEY!
     const url = `https://query1.finance.yahoo.com/v8/finance/chart/GC=F?interval=1d&range=1y`;
 
     const resp = await fetch(url, {
@@ -53,7 +48,6 @@ async function fetchGoldCandles(limit: number = 200): Promise<GoldPriceCandle[]>
     const liveCandles: GoldPriceCandle[] = [];
 
     for (let i = 0; i < timestamps.length; i++) {
-      // Skip holidays or empty data frames
       if (quote.close[i] === null || quote.open[i] === null) continue;
 
       const dateStr = new Date(timestamps[i] * 1000).toISOString().slice(0, 10);
@@ -68,13 +62,11 @@ async function fetchGoldCandles(limit: number = 200): Promise<GoldPriceCandle[]>
       });
     }
 
-    // Limit to the requested number of entries (e.g., last 200 days)
     return liveCandles.slice(-limit);
 
   } catch (error) {
     console.warn("⚠️ Live data fetch failed, using local mock data fallback:", error);
     
-    // ULTIMATE SAFETY FALLBACK: If the API breaks or blocks us, generate local data so the UI NEVER goes blank
     const mockCandles: GoldPriceCandle[] = [];
     let basePrice = 2350.00;
     const today = new Date();
