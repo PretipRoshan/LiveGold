@@ -6,7 +6,7 @@ import {
   Mail, 
   LineChart, 
   RotateCcw,
-  AlertTriangle // <-- Add this here!
+  AlertTriangle
 } from 'lucide-react';
 import { AnalysisResponse, AlertLog } from './types';
 import LiveSignals from './components/LiveSignals';
@@ -99,23 +99,23 @@ export default function App() {
       setIsSimulating(false);
     }
   };
-  useEffect(() => {
-    const bootstrap = async () => {
-      setIsLoading(true);
-      await Promise.all([fetchGoldData(), fetchAlertLogs(), fetchCommentary(false)]);
-      setIsLoading(false);
-    };
-    bootstrap();
-  }, []);
 
-  // 2. Interactive simulator dispatch triggers
+  // 2. Interactive simulator dispatch triggers (FIXED TO MATCH BACKEND ACTION STRINGS)
   const handleSimulateTick = async (direction: 'up' | 'down' | 'random', swing: 'small' | 'large') => {
     setIsSimulating(true);
+    
+    // Translate the frontend variables into the exact action string the backend expects
+    let actionString = 'random_tick';
+    if (direction === 'up' && swing === 'large') actionString = 'surge';
+    if (direction === 'down' && swing === 'large') actionString = 'dump';
+    if (direction === 'up' && swing === 'small') actionString = 'nudge_up';
+    if (direction === 'down' && swing === 'small') actionString = 'nudge_down';
+
     try {
       const res = await fetch('/api/simulate-tick', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ direction, swing })
+        body: JSON.stringify({ action: actionString })
       });
       if (res.ok) {
         const updated: AnalysisResponse = await res.json();
@@ -401,7 +401,8 @@ export default function App() {
           </div>
         )}
       </main>
-  {/* --- ADD THIS NEW FOOTER SECTION --- */}
+
+      {/* --- ADD THIS NEW FOOTER SECTION --- */}
       <footer className="w-full border-t border-[#2A2D35] bg-[#0A0B0D] py-4" id="global-disclaimer-footer">
         <div className="max-w-7xl mx-auto px-6 md:px-12 text-center flex items-center justify-center space-x-2">
           <AlertTriangle className="w-3.5 h-3.5 text-[#848E9C]" />
